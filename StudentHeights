@@ -1,0 +1,28 @@
+rm(list=ls())     #remove any existing objects
+setwd("C:/Users/k1076631/Dropbox/Teaching/2014-15/Undergrad/PGI-I/Week1_ExploringData")    #change this to directory where you have saved your data
+
+all.dat <- read.csv("ClassSurveyData14-15.csv", header = T)  #read the data into memory, giving the object created the name 'all.dat'
+print(all.dat)   #print the data to view
+
+#Next line removes bad data. What this actually does is create a new data object with all rows of all.dat with height > 100 and all columns of all.dat (alternatively manupulate data in Excel then read into R)
+good.dat <- all.dat[all.dat$Q3_height > 100,]
+
+plot(good.dat$id, good.dat$Q3_height, ylab = "Height (cm)", xlab = "Student id")  #scatter plot of student height column against student id column
+
+all.mean.height <- mean(good.dat$Q3_height)  #calculate mean height of all students putting result in an object named 'all.mean.height'
+print(all.mean.height)  #print to view 
+
+male.dat <- subset(good.dat, Q1_gender == 0)   #subset data by gender (male)
+print(male.dat)
+female.dat <- subset(good.dat, Q1_gender == 1) #subset data by gender (female)
+print(female.dat)
+
+male.mean.height <- mean(male.dat$Q3_height)  #calculate mean height from male only data
+female.mean.height <- mean(female.dat$Q3_height)  #calculate mean height from female only data
+print(male.mean.height)
+print(female.mean.height)
+
+gender.means <- c(male.mean.height, female.mean.height) #create a new object named 'gender.means' holding both mean heigths
+
+barplot(gender.means, names = c("Male", "Female"), ylab = "Mean Height (cm)", main = "Student Height by Gender") #create a bar plot of mean height by gender with appropriate axis labels and title
+barplot(gender.means, ylim = c(150, 190), xpd = F, names = c("Male", "Female"), ylab = "Mean Height (cm)", main = "Student Height by Gender") #create a bar plot of mean height by gender with customised y-axis scale
